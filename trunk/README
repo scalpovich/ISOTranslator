@@ -1,0 +1,58 @@
+
+-----------------------------------------------------------------------------------------------
+
+SonarQube Installation
+
+-------------------------------------------------------------------------------------------------
+1) Download and install latest version of SonarQube
+
+https://www.sonarqube.org/downloads/
+
+2) Download and install latest version of Sonar Scanner
+
+https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
+
+3) Run JaCoCo to build and generate the Code Coverage report
+
+mvn org.jacoco:jacoco-maven-plugin:prepare-agent install
+
+4) Run Sonar Scanner to scan the project and upload results to local SonarQube server
+
+sonar-scanner
+
+5) Access local SonarQube server
+
+http://localhost:9000/
+
+
+---------------------------------------------------------------------------------------------------------
+
+Running the application locally
+
+------------------------------------------------------------------------------------------------------
+
+Add this as a VM argument in your Run Time Configurations
+
+-Dspring.profiles.active=local -noverify -Ddummy=-
+
+------------------------------------------------------------------------------
+
+Deploying to JBoss
+
+--------------------------------------------------------------------------------
+
+1) Create a datasource in JBoss EAP named "CCLP_CONFIG_DS"
+
+2) Uncomment the section in pom.xml to exclude the embedded tomcat 
+
+3) Uncomment this line in application.properties
+
+#spring.datasource.jndi-name=java:/CCLP_CONFIG_DS
+
+4) Build the app
+
+mvn clean install
+
+5) Deploy to JBoss EAP using the Wildfly maven plugin
+
+mvn package -Dmaven.test.skip=true wildfly:deploy -Dhostname=localhost -Dport=9999 -Dusername=admin -Dpassword=admin -Dflename=CCLP-Config-0.0.1-SNAPSHOT.war
